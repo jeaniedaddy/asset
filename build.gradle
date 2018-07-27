@@ -29,5 +29,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-mail')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
+    compile('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
+	compile('org.webjars:bootstrap:3.3.7')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

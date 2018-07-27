@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Edit Product</title>
+</head>
+<body>
+<div layout:fragment="content" class="row">
+    <div class="col-xs-8 col-md-8">
+        <h3>
+            <a href="/mc" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-list"></span> Mobiles</a>
+        </h3>
+        <h2>Edit Mobile</h2>
+        <form action="/update">
+            <div class="form-group">
+                <label for="email">Host Name:</label>
+                <input type="text" class="form-control" name="hostName" th:value="${mc.hostName}" />
+            </div>
+            <div class="form-group">
+                <label for="email">Asset Number:</label>
+                <input type="text" class="form-control" name="assetNo" th:value="${mc.assetNo}" />
+            </div>
+            <div class="form-group">
+                <label for="email">Model Name:</label>
+                <input type="text" class="form-control" name="modelName" th:value="${mc.modelName}" />
+            </div>
+
+            <input type="hidden" name="id" th:value="${mc.id}" />
+            <button type="submit" class="btn btn-success">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

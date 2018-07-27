@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Product List</title>
+</head>
+<body>
+<div layout:fragment="content" class="row">
+    <div class="col-xs-8 col-md-8">
+        <h3>
+            <a href="/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Mobile</a>
+        </h3>
+        <h2>Mobile List</h2>
+        <div class="table-responsive">
+            <table class="table" id="product-table">
+                <thead>
+                <tr>
+                    <th>Host Name</th>
+                    <th>Asset Number</th>
+                    <th>Model Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="mc : ${mcs}">
+                    <td><a th:text="${mc.hostName}" th:href="@{'/show/' + ${mc.id}}"></a></td>
+                    <td th:text="${mc.assetNo}"></td>
+                    <td th:text="${mc.modelName}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>
