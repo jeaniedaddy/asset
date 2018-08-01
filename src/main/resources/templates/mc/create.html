@@ -7,16 +7,18 @@
     <title>Create Mobile</title>
 </head>
 <body>
+
+
 <div layout:fragment="content" class="row">
     <div class="col-xs-8 col-md-8">
         <h3>
             <a href="/mc" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-list"></span>Mobiles</a>
         </h3>
         <h2>Create Mobile</h2>
-        <form action="/save">
+        <form action="/mc/save">
             <div class="form-group">
                 <label for="email">Host Name:</label>
-                <input type="text" class="form-control" name="hostName" />
+                <input type="text" class="form-control" name="hostName" onkeyup="this.value = this.value.toUpperCase();" />
             </div>
             <div class="form-group">
                 <label for="email">Asset Number</label>

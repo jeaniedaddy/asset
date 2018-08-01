@@ -22,10 +22,10 @@
             <dt>Note</dt>
             <dd th:text="${mc.modelName}"></dd>
         </dl>
-        <form action="/delete">
+        <form action="/mc/delete">
             <input type="hidden" name="id" th:value="${mc.id}" />
             <h2><input type="submit" class="btn btn-danger" value="Delete" onclick="return confirm('Are you sure?');" />
-                <a th:href="@{'/edit/' + ${mc.id}}" class="btn btn-warning">Edit</a></h2>
+                <a th:href="@{'/mc/edit/' + ${mc.id}}" class="btn btn-warning">Edit</a></h2>
         </form>
     </div>
 </div>

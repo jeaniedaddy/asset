@@ -20,12 +20,12 @@ public class MobileComputerController {
         return "mc/mc";
     }
 
-    @RequestMapping("/create")
+    @RequestMapping("/mc/create")
     public String create(Model model) {
         return "mc/create";
     }
 
-    @RequestMapping("/save")
+    @RequestMapping("/mc/save")
     public String save(@RequestParam String hostName, @RequestParam String assetNo, @RequestParam String modelName) {
         MobileComputer mc = new MobileComputer(hostName,assetNo,modelName);
         mcRepository.save(mc);
@@ -33,27 +33,28 @@ public class MobileComputerController {
         return "redirect:/mc/show/" + mc.getId();
     }
 
-    @RequestMapping("/show/{id}")
+    @RequestMapping("/mc/show/{id}")
     public String show(@PathVariable String id, Model model) {
+
         model.addAttribute("mc", mcRepository.findById(id).get());
         return "mc/show";
     }
 
-    @RequestMapping("/delete")
+    @RequestMapping("/mc/delete")
     public String delete(@RequestParam String id) {
         MobileComputer mc = mcRepository.findById(id).get();
         mcRepository.delete(mc);
 
-        return "redirect:/mc/mc";
+        return "redirect:/mc";
     }
 
-    @RequestMapping("/edit/{id}")
+    @RequestMapping("/mc/edit/{id}")
     public String edit(@PathVariable String id, Model model) {
         model.addAttribute("mc", mcRepository.findById(id).get());
         return "mc/edit";
     }
 
-    @RequestMapping("/update")
+    @RequestMapping("/mc/update")
     public String update(@RequestParam String id, @RequestParam String hostName, @RequestParam String assetNo, @RequestParam String modelName) {
         MobileComputer mc = mcRepository.findById(id).get();
         mc.setAssetNo(assetNo);

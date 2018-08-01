@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Mobile Status</title>
+</head>
+<body>
+<div layout:fragment="content" class="row">
+    <div class="col-xs-8 col-md-8">
+        <h2>Mobile Status</h2>
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Usage by period
+                <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+
+                <li><a href="/mobilelog/mobilestatus/1">Today</a></li>
+                <li><a href="/mobilelog/mobilestatus/7">For 7 Days</a></li>
+                <li><a href="/mobilelog/mobilestatus/30">For 30 Days</a></li>
+
+            </ul>
+        </div>
+        <div class="table-responsive">
+            <table class="table" id="mobilestatus-table">
+                <thead>
+                <tr>
+                    <th class="col-md-2" >Computer Name</th>
+                    <th class="col-md-2" >Asset No</th>
+                    <th class="col-md-3" >Model Name</th>
+                    <th class="col-md-4" >Usage Bar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ms : ${mobilestatus}">
+                    <td class="col-md-2" ><a th:text="${ms.hostName}" th:href="@{'/mobilelog/mobilelogs/' + ${ms.hostName}}"></a></td>
+                    <td class="col-md-2" th:text="${ms.assetNo}"></td>
+                    <td class="col-md-2" th:text="${ms.modelName}"></td>
+                    <td class="col-md-4" >
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" th:style="'width:'+${ms.percent}+'%;'"></div>
+                        </div>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
