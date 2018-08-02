@@ -13,4 +13,5 @@ public interface MobileLogRepository extends MongoRepository<MobileLog, String>{
     List<MobileLog> findAllByLogDateGreaterThan(String start);
     List<MobileLog> findAllByComputerNameAndLogDateGreaterThan(String computerName, String start);
     List<MobileLog> findAllByComputerNameContains(String name);
+
 }

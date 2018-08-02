@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.util.DateUtils;
 
 import javax.swing.text.html.Option;
@@ -37,9 +38,11 @@ public class MobileLogController {
     @RequestMapping({"/mobilelog/mobilelogs/{hostName}", "/mobilelog/mobilelogs"})
     public String mobileLogs(@PathVariable Optional<String> hostName, Model model)
     {
-        List<MobileLog> mls = new ArrayList<>();
+        List<MobileLog> mls ;
         if(hostName.isPresent()){
             mls = mlRepository.findAllByComputerName(hostName.get());
+//            mls = mlRepository.findAllByComputerNameOrderByIdDateAndtimeDesc(hostName.get());
+            //findAllByComputerNameContainsOrderByIdIdDesc
         } else {
             mls = mlRepository.findAll();
         }
@@ -48,16 +51,17 @@ public class MobileLogController {
         return "mobilelog/mobilelogs";
     }
 
-    @RequestMapping({"/mobilelog/search/{name}", "/mobilelog/search/"})
-    public String searchMobileLogs(@PathVariable Optional<String> name, Model model){
-        if(!name.isPresent()){
+    @RequestMapping("/mobilelog/search")
+    public String searchMobileLogs(@RequestParam Optional<String> aname, Model model){
+        if(!aname.isPresent()){
             return "redirect:/mobilelog/mobilelogs";
         } else {
-            List<MobileLog> mls = mlRepository.findAllByComputerNameContains(name.get());
+            List<MobileLog> mls = mlRepository.findAllByComputerNameContains(aname.get().toUpperCase());
             model.addAttribute("mobilelogs", mls);
             return "mobilelog/mobilelogs";
         }
     }
+
 
 
     @GetMapping({"/mobilelog/mobilestatus/{days}", "/mobilelog/mobilestatus"})
