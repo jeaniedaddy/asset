@@ -59,7 +59,7 @@ public class MobileLogRestController {
 //    }
 
     // test methods
-    @RequestMapping("/mobilelog/iphosttest")
+    @GetMapping("/mobilelog/iphosttest")
     public String iphosttest(@RequestParam(value="ipAddress") String ipAddress ){
 
         String hotName = "";
@@ -72,7 +72,7 @@ public class MobileLogRestController {
         return "IP :" + ipAddress + "  Host name :" + hotName;
     }
 
-    @RequestMapping("/mobilelog/savetest")
+    @PostMapping("/mobilelog/savetest")
     public MobileLog saveMobileLogTest(@RequestParam(value="computerName") String computerName ){
         String ipAddress = "10.10.0.6";
         Date now = new Date();

@@ -35,7 +35,7 @@ public class MobileLogController {
     @Autowired
     MobileComputerRepository mcRepository;
 
-    @RequestMapping({"/mobilelog/mobilelogs/{hostName}", "/mobilelog/mobilelogs"})
+    @GetMapping({"/mobilelog/mobilelogs/{hostName}", "/mobilelog/mobilelogs"})
     public String mobileLogs(@PathVariable Optional<String> hostName, Model model)
     {
         List<MobileLog> mls ;
@@ -51,7 +51,7 @@ public class MobileLogController {
         return "mobilelog/mobilelogs";
     }
 
-    @RequestMapping("/mobilelog/search")
+    @GetMapping("/mobilelog/search")
     public String searchMobileLogs(@RequestParam Optional<String> aname, Model model){
         if(!aname.isPresent()){
             return "redirect:/mobilelog/mobilelogs";
