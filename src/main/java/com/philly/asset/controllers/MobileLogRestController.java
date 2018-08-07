@@ -72,7 +72,7 @@ public class MobileLogRestController {
         return "IP :" + ipAddress + "  Host name :" + hotName;
     }
 
-    @PostMapping("/mobilelog/savetest")
+    @RequestMapping("/mobilelog/savetest")
     public MobileLog saveMobileLogTest(@RequestParam(value="computerName") String computerName ){
         String ipAddress = "10.10.0.6";
         Date now = new Date();

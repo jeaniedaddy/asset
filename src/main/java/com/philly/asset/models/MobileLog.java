@@ -26,6 +26,7 @@ public class MobileLog {
         this.ipAddress = ipAddress;
         this.logDate = logDate;
         this.logTime = logTime;
+        this.dateAndtime = logDate + logTime;
     }
 
     public String getComputerName() {
