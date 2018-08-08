@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Mobile Logs</title>
+
+    <style>
+        .pagination-centered {
+            text-align: center;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .pointer-disabled {
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="row">
+    <div class="col-xs-10 col-md-12">
+        <h2>Mobile Logs</h2>
+        <div class="table-responsive">
+            <table class="table" id="mobilelogs-table">
+                <thead>
+                <tr>
+                    <th>Computer Name</th>
+                    <th>Login ID</th>
+                    <th>IP Address</th>
+                    <th>Log Date</th>
+                    <th>Log Time</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ml, iStat : ${clientlist.content}"
+                    th:style="${iStat.odd}? 'font-weight: bold;'"
+                    th:alt-title="${iStat.even}? 'even' : 'odd'">
+                    <td th:text="${ml.computerName}" />
+                    <td th:text="${ml.loginId}" />
+                    <td th:text="${ml.ipAddress}" />
+                    <td th:text="${ml.logDate}" />
+                    <td th:text="${ml.logTime}" />
+                </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="form-group col-md-1">
+                    <select class="form-control pagination" id="pageSizeSelect">
+                        <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
+                                th:value="${pageSize}"
+                                th:selected="${pageSize} == ${selectedPageSize}"></option>
+                    </select>
+                </div>
+                <div th:if="${clientlist.totalPages != 1}"
+                     class="form-group col-md-11 pagination-centered">
+                    <ul class="pagination">
+                        <li th:class="${clientlist.number == 0} ? disabled"><a
+                                class="pageLink"
+                                th:href="@{/mobilelog(pageSize=${selectedPageSize}, page=1)}">«</a>
+                        </li>
+                        <li th:class="${clientlist.number == 0} ? disabled"><a
+                                class="pageLink"
+                                th:href="@{/mobilelog(pageSize=${selectedPageSize}, page=${clientlist.number})}">←</a>
+                        </li>
+                        <li
+                                th:class="${clientlist.number == (page - 1)} ? 'active pointer-disabled'"
+                                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                            <a class="pageLink"
+                               th:href="@{/mobilelog(pageSize=${selectedPageSize}, page=${page})}"
+                               th:text="${page}"></a>
+                        </li>
+                        <li
+                                th:class="${clientlist.number + 1 == clientlist.totalPages} ? disabled">
+                            <a class="pageLink"
+                               th:href="@{/mobilelog(pageSize=${selectedPageSize}, page=${clientlist.number + 2})}">→</a>
+                        </li>
+                        <li
+                                th:class="${clientlist.number + 1 == clientlist.totalPages} ? disabled">
+                            <a class="pageLink"
+                               th:href="@{/mobilelog(pageSize=${selectedPageSize}, page=${clientlist.totalPages})}">»</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--div th:if="${mobileLogPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/mobilelog(size=${mobileLogPage.size}, page=${pageNumber})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==mobileLogPage.number + 1} ? active"></a>
+            </div-->
+
+        </div>
+    </div>
+</div>
+
+<script >
+    $(document).ready(function(){
+        alert("AAAA");
+    };
+    /*
+    $(document).ready(function() {
+        alert("fjkdljflkd");
+        changePageAndSize();
+    });
+    function changePageAndSize() {
+        $('#pageSizeSelect').change(function(evt) {
+            alert("aaa");
+            window.location.replace("/?pageSize=" + this.value + "&page=1");
+        });
+    }
+    */
+</script>
+</body>
+</html>
+
+
+</body>
+</html>
