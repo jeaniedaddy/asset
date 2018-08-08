@@ -15,8 +15,11 @@ public interface MobileLogRepository extends MongoRepository<MobileLog, String> 
     //List<MobileLog> findAllByComputerName(String computerName) ;
 //    @Query("{'dateAndtime':?0}")
     Page<MobileLog> findAllByOrderByDateAndtimeDesc ( Pageable pageable);
-    List<MobileLog> findAllByComputerNameOrderByDateAndtimeDesc(String computerName) ;
     Page<MobileLog> findAllByComputerNameOrderByDateAndtimeDesc(String computerName, Pageable pageable) ;
+
+    List<MobileLog> findAllByComputerNameOrderByDateAndtimeDesc(String computerName) ;
+
+
 
     List<MobileLog> findByLogDateBetween(String start, String end);
     List<MobileLog> findAllByComputerNameAndLogDateBetween(String computerName, String start, String end);

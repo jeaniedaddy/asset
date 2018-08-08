@@ -1,4 +1,4 @@
-package com.philly.asset.controllers;
+package com.philly.asset.controllers.rest;
 
 import com.philly.asset.models.MobileLog;
 import com.philly.asset.repositories.MobileLogRepository;
@@ -36,28 +36,6 @@ public class MobileLogRestController {
         return "Y";
     }
 
-//    @RequestMapping("/mobilelog/save")
-//    public String saveMobileLog(@RequestParam Map<String, String> requestParams){
-//
-//        String ipAddress = requestParams.get("ipAddress");
-//        String loginId = requestParams.get("loginid");
-//        Date logDate = new Date();
-//        String hostName = "";
-//        try {
-//            hostName = NetUtil.convertIPtoMac(ipAddress);
-//        } catch (Exception e){
-//            return "N";
-//        }
-//
-//        LocalDateTime now = LocalDateTime.now();
-//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmmss");
-//
-//        MobileLog ml = new MobileLog(hostName,loginId, "", ipAddress, dateFormatter.format(now), timeFormatter.format(now));
-//        mobileLogRepository.save(ml);
-//        return "Y";
-//    }
-
     // test methods
     @GetMapping("/mobilelog/iphosttest")
     public String iphosttest(@RequestParam(value="ipAddress") String ipAddress ){
@@ -72,7 +50,7 @@ public class MobileLogRestController {
         return "IP :" + ipAddress + "  Host name :" + hotName;
     }
 
-    @RequestMapping("/mobilelog/savetest")
+    @PostMapping("/mobilelog/savetest")
     public MobileLog saveMobileLogTest(@RequestParam(value="computerName") String computerName ){
         String ipAddress = "10.10.0.6";
         Date now = new Date();

@@ -34,7 +34,7 @@
                 <tbody>
 
                 <tr th:each="ms : ${mobilestatus}">
-                    <td class="col-md-3" ><a th:text="${ms.hostName}" th:href="@{'/mobilelog/mobilelogs/' + ${ms.hostName}}"></a></td>
+                    <td class="col-md-3" ><a th:text="${ms.hostName}" th:href="@{'/mobilelog/' + ${ms.hostName}}"></a></td>
                     <td class="col-md-2" th:text="${ms.assetNo}"></td>
                     <td class="col-md-3" th:text="${ms.modelName}"></td>
                     <td class="col-md-4" >

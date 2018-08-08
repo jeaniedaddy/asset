@@ -30,15 +30,15 @@ public class MobileLogController {
 
     private static final int BUTTONS_TO_SHOW = 3;
     private static final int INITIAL_PAGE = 0;
-    private static final int INITIAL_PAGE_SIZE = 5;
-    private static final int[] PAGE_SIZES = { 5, 10};
+    private static final int INITIAL_PAGE_SIZE = 20;
+    private static final int[] PAGE_SIZES = { 10, 20, 50};
 
     @Autowired
     MobileLogRepository mlRepository;
 
     @Autowired
     MobileComputerRepository mcRepository;
-
+/*
     @GetMapping("/mobilelog/index/{hostName}")
     public String pageTest(@PathVariable Optional<String> hostName,Model model , @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
         page.ifPresent(p -> currentPage = p);
@@ -57,56 +57,65 @@ public class MobileLogController {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                 .boxed()
                 .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers); 
+            model.addAttribute("pageNumbers", pageNumbers);
 
         }
 
         return "mobilelog/mobilelogs02";
     }
 
+    */
+
+    //default index method
     @GetMapping("/mobilelog")
-    public ModelAndView mobileLogindex(@RequestParam("page") Optional<Integer> page, @RequestParam("pize") Optional<Integer> pageSize){
+    public ModelAndView index(@RequestParam("page") Optional<Integer> page, @RequestParam("pageSize") Optional<Integer> pageSize){
         ModelAndView modelAndView = new ModelAndView("mobilelog/index");
-        //
-        // Evaluate page size. If requested parameter is null, return initial
-        // page size
+
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
-        // Evaluate page. If requested parameter is null or less than 0 (to
-        // prevent exception), return initial size. Otherwise, return value of
-        // param. decreased by 1.
         int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
-        // print repo
-        Page<MobileLog> clientlist = mlRepository.findAllByOrderByDateAndtimeDesc(new PageRequest(evalPage, evalPageSize));
+        String url = "/mobilelog";
 
-        PagerModel pager = new PagerModel(clientlist.getTotalPages(),clientlist.getNumber(),BUTTONS_TO_SHOW);
-        // add clientmodel
-        modelAndView.addObject("clientlist",clientlist);
-        // evaluate page size
+        Page<MobileLog> mobileLogList = mlRepository.findAllByOrderByDateAndtimeDesc(new PageRequest(evalPage, evalPageSize));
+        PagerModel pager = new PagerModel(mobileLogList.getTotalPages(),mobileLogList.getNumber(),BUTTONS_TO_SHOW);
+
+        modelAndView.addObject("mobileLogList",mobileLogList);
         modelAndView.addObject("selectedPageSize", evalPageSize);
-        // add page sizes
         modelAndView.addObject("pageSizes", PAGE_SIZES);
-        // add pager
         modelAndView.addObject("pager", pager);
+        modelAndView.addObject("url", url);
         return modelAndView;
-        /*
-        page.ifPresent(p -> currentPage = p);
-        size.ifPresent(s -> pageSize = s);
-
-        Page<MobileLog> mobileLogPage
-        mobileLogPage = mlRepository.findAllOrderByDateAndtimeDec(PageRequest.of(currentPage -1, pageSize));
-
-        model.addAttribute("mobileLogPage", mobileLogPage);
-        int totalPages = mobileLogPage.getTotalPages();
-        if(totalPages > 0){
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-
-        }
-        */
     }
 
+    @GetMapping("/mobilelog/{hostName}")
+    public ModelAndView indexByHostName(@RequestParam("page") Optional<Integer> page, @RequestParam("pageSize") Optional<Integer> pageSize, @PathVariable Optional<String> hostName){
+        ModelAndView modelAndView = new ModelAndView("mobilelog/index");
+        String evalHostName ;
+        Page<MobileLog> mobileLogList;
+        PagerModel pager;
+
+        int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
+        int evalPage = (page.orElse(0) < 1) ? INITIAL_PAGE : page.get() - 1;
+        String url ;
+
+        if(!hostName.isPresent()){
+            //do something.
+        } else{
+            evalHostName = hostName.get();
+            url = "/mobilelog/"+ evalHostName;
+
+            mobileLogList = mlRepository.findAllByComputerNameOrderByDateAndtimeDesc(evalHostName, new PageRequest(evalPage, evalPageSize));
+            pager = new PagerModel(mobileLogList.getTotalPages(),mobileLogList.getNumber(),BUTTONS_TO_SHOW);
+            modelAndView.addObject("hostName",evalHostName);
+            modelAndView.addObject("mobileLogList",mobileLogList);
+            modelAndView.addObject("selectedPageSize", evalPageSize);
+            modelAndView.addObject("pageSizes", PAGE_SIZES);
+            modelAndView.addObject("pager", pager);
+            modelAndView.addObject("url", url);
+        }
+        return modelAndView;
+    }
+
+/*
     @GetMapping({"/mobilelog/mobilelogs/{hostName}", "/mobilelog/mobilelogs"})
     public String mobileLogs(@PathVariable Optional<String> hostName, Model model)
 
@@ -126,6 +135,7 @@ public class MobileLogController {
         return "mobilelog/mobilelogs";
     }
 
+*/
     @GetMapping("/mobilelog/search")
     public String searchMobileLogs(@RequestParam Optional<String> aname, Model model){
         if(!aname.isPresent()){
@@ -139,7 +149,7 @@ public class MobileLogController {
     }
 
 
-
+/*
     @GetMapping({"/mobilelog/mobilestatus/{days}", "/mobilelog/mobilestatus"})
     public String mobileLogs4(@PathVariable Optional<Integer> days, Model model)
     {
@@ -179,5 +189,6 @@ public class MobileLogController {
             return percent;
         }
     }
+    */
 
 }

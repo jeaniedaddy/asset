@@ -4,7 +4,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="default">
 <head>
-    <title>Mobile Logs</title>
+    <title>Mobile Computers</title>
     <style>
         .pagination-centered {
             text-align: center;
@@ -35,27 +35,26 @@
 <body>
 <div layout:fragment="content" class="row">
     <div class="table-responsive col-xs-10 col-md-12">
-        <h2 th:text="${hostName == null} ? 'Mobile Logs' : 'Mobile Logs : '+${hostName}"></h2>
+        <h2 th:text="${hostName == null} ? 'Mobile Computers' : 'Mobile Computer : '+${hostName}"></h2>
+        <h2>
+            <a href="/mc/create" class="btn btn-primary"><span class="glyphicon glyphicon-plus-sign"></span> Mobile</a>
+        </h2>
         <div >
             <table class="table" id="mobilelogs-table">
                 <thead>
                 <tr>
-                    <th>Computer Name</th>
-                    <th>Login ID</th>
-                    <th>IP Address</th>
-                    <th>Log Date</th>
-                    <th>Log Time</th>
+                    <th>Host Name</th>
+                    <th>Asset Number</th>
+                    <th>Model Name</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="ml, iStat : ${mobileLogList.content}"
+                <tr th:each="mc, iStat : ${list.content}"
                     th:style="${iStat.odd}? 'font-weight: bold;'"
                     th:alt-title="${iStat.even}? 'even' : 'odd'">
-                    <td th:text="${ml.computerName}" />
-                    <td th:text="${ml.loginId}" />
-                    <td th:text="${ml.ipAddress}" />
-                    <td th:text="${ml.logDate}" />
-                    <td th:text="${ml.logTime}" />
+                    <td><a th:text="${mc.hostName}" th:href="@{'/mc/' + ${mc.id}}"></a></td>
+                    <td th:text="${mc.assetNo}"></td>
+                    <td th:text="${mc.modelName}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -67,33 +66,33 @@
                                 th:selected="${pageSize} == ${selectedPageSize}"></option>
                     </select>
                 </div>
-                <div th:if="${mobileLogList.totalPages != 1}"
+                <div th:if="${list.totalPages != 1}"
                      class="form-group col-md-11 pagination-centered">
                     <ul class="pagination">
-                        <li th:class="${mobileLogList.number == 0} ? disabled"><a
+                        <li th:class="${list.number == 0} ? disabled"><a
                                 class="pageLink"
                                 th:href="@{${url}(pageSize=${selectedPageSize}, page=1)}">«</a>
                         </li>
-                        <li th:class="${mobileLogList.number == 0} ? disabled"><a
+                        <li th:class="${list.number == 0} ? disabled"><a
                                 class="pageLink"
-                                th:href="@{${url}(pageSize=${selectedPageSize}, page=${mobileLogList.number})}">Previous</a>
+                                th:href="@{${url}(pageSize=${selectedPageSize}, page=${list.number})}">Previous</a>
                         </li>
                         <li
-                                th:class="${mobileLogList.number == (page - 1)} ? 'active pointer-disabled'"
+                                th:class="${list.number == (page - 1)} ? 'active pointer-disabled'"
                                 th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
                             <a class="pageLink"
                                th:href="@{${url}(pageSize=${selectedPageSize}, page=${page})}"
                                th:text="${page}"></a>
                         </li>
                         <li
-                                th:class="${mobileLogList.number + 1 == mobileLogList.totalPages} ? disabled">
+                                th:class="${list.number + 1 == list.totalPages} ? disabled">
                             <a class="pageLink"
-                               th:href="@{${url}(pageSize=${selectedPageSize}, page=${mobileLogList.number + 2})}">Next</a>
+                               th:href="@{${url}(pageSize=${selectedPageSize}, page=${list.number + 2})}">Next</a>
                         </li>
                         <li
-                                th:class="${mobileLogList.number + 1 == mobileLogList.totalPages} ? disabled">
+                                th:class="${list.number + 1 == list.totalPages} ? disabled">
                             <a class="pageLink"
-                               th:href="@{${url}(pageSize=${selectedPageSize}, page=${mobileLogList.totalPages})}">»</a>
+                               th:href="@{${url}(pageSize=${selectedPageSize}, page=${list.totalPages})}">»</a>
                         </li>
                     </ul>
                 </div>

@@ -1,6 +1,8 @@
 package com.philly.asset.repositories;
 
 import com.philly.asset.models.MobileComputer;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -15,8 +17,12 @@ public interface MobileComputerRepository  extends MongoRepository<MobileCompute
     public List<MobileComputer>  findAll();
 
     public List<MobileComputer> findAllOrderByHostName(Sort sort);
+
     //public List<MobileComputer>  findAllOrderByHostName();
     public Optional<MobileComputer> findById(String id);
+
+    Page<MobileComputer> findAllByOrderByHostNameAsc(Pageable pageable);
+    Iterable<MobileComputer> findAllByOrderByHostNameAsc();
 }
 
 

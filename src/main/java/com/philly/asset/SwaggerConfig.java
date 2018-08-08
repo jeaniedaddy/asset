@@ -16,9 +16,8 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 //.apis(RequestHandlerSelectors.any())
-                .apis(RequestHandlerSelectors.basePackage("com.philly.asset.controllers"))
-                //.paths(PathSelectors.any())
-                .paths(PathSelectors.ant("/mobilelog/*"))
+                .apis(RequestHandlerSelectors.basePackage("com.philly.asset.controllers.rest"))
+                .paths(PathSelectors.any())
                 .build();
     }
 }
