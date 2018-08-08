@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeController {
     @RequestMapping("/")
     public String index(){
-        return "redirect:/mobilelog/mobilelogs";
+        return "redirect:/mobilestatus";
     }
 
     @RequestMapping("/about")

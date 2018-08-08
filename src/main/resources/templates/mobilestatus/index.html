@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Mobile Status</title>
+    <style>
+        .pagination-centered {
+            text-align: center;
+        }
+        .disabled {
+            pointer-events: none;
+            opacity: 0.5;
+        }
+        .pointer-disabled {
+            pointer-events: none;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script th:inline="javascript" >
+        /*<![CDATA[*/
+        $(document).ready(function() {
+            changePageAndSize();
+        });
+        function changePageAndSize() {
+            $('#pageSizeSelect').change(function(evt) {
+                var url =  /*[[${url}]]*/ 'default'
+                window.location.replace(url  +"?pageSize=" + this.value + "&page=1");
+            });
+        }
+        /*]]>*/
+    </script>
+</head>
+<body>
+<div layout:fragment="content" class="row">
+    <div class="table-responsive col-xs-10 col-md-12">
+        <h2 th:text="${hostName == null} ? 'Mobile Status' : 'Mobile Status : '+${hostName}"></h2>
+
+
+        <div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Usage by period
+                <span class="caret"></span></button>
+            <ul class="dropdown-menu">
+
+                <li><a href="/mobilestatus?days=1">Today</a></li>
+                <li><a href="/mobilestatus?days=7">For 7 Days</a></li>
+                <li><a href="/mobilestatus?days=30">For 30 Days</a></li>
+
+            </ul>
+        </div>
+
+        <div >
+            <table class="table" id="mobilelogs-table">
+                <thead>
+                <tr>
+                    <th >Computer Name</th>
+                    <th >Asset No</th>
+                    <th >Model Name</th>
+                    <th >Usage Bar</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ms, iStat : ${list.content}"
+                    th:style="${iStat.odd}? 'font-weight: bold;'"
+                    th:alt-title="${iStat.even}? 'even' : 'odd'">
+
+                    <td><a th:text="${ms.hostName}" th:href="@{'/mobilelog/' + ${ms.hostName}}"></a></td>
+                    <td th:text="${ms.assetNo}"></td>
+                    <td th:text="${ms.modelName}"></td>
+                    <td>
+                        <div class="progress" >
+                            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" th:style="'width:'+${ms.percent}+'%;'"></div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="form-group col-md-1">
+                    <select class="form-control pagination" id="pageSizeSelect">
+                        <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
+                                th:value="${pageSize}"
+                                th:selected="${pageSize} == ${selectedPageSize}"></option>
+                    </select>
+                </div>
+                <div th:if="${list.totalPages != 1}"
+                     class="form-group col-md-11 pagination-centered">
+                    <ul class="pagination">
+                        <li th:class="${list.number == 0} ? disabled"><a
+                                class="pageLink"
+                                th:href="@{${url}(days=${days}, pageSize=${selectedPageSize}, page=1)}">«</a>
+                        </li>
+                        <li th:class="${list.number == 0} ? disabled"><a
+                                class="pageLink"
+                                th:href="@{${url}(days=${days}, pageSize=${selectedPageSize}, page=${list.number})}">Previous</a>
+                        </li>
+                        <li
+                                th:class="${list.number == (page - 1)} ? 'active pointer-disabled'"
+                                th:each="page : ${#numbers.sequence(pager.startPage, pager.endPage)}">
+                            <a class="pageLink"
+                               th:href="@{${url}(days=${days}, pageSize=${selectedPageSize}, page=${page})}"
+                               th:text="${page}"></a>
+                        </li>
+                        <li
+                                th:class="${list.number + 1 == list.totalPages} ? disabled">
+                            <a class="pageLink"
+                               th:href="@{${url}(days=${days}, pageSize=${selectedPageSize}, page=${list.number + 2})}">Next</a>
+                        </li>
+                        <li
+                                th:class="${list.number + 1 == list.totalPages} ? disabled">
+                            <a class="pageLink"
+                               th:href="@{${url}(days=${days}, pageSize=${selectedPageSize}, page=${list.totalPages})}">»</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--div th:if="${mobileLogPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
+                <a th:href="@{/mobilelog(size=${mobileLogPage.size}, page=${pageNumber})}"
+                   th:text=${pageNumber}
+                   th:class="${pageNumber==mobileLogPage.number + 1} ? active"></a>
+            </div-->
+
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
+
+
+</body>
+</html>

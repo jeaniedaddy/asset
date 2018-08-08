@@ -38,33 +38,6 @@ public class MobileLogController {
 
     @Autowired
     MobileComputerRepository mcRepository;
-/*
-    @GetMapping("/mobilelog/index/{hostName}")
-    public String pageTest(@PathVariable Optional<String> hostName,Model model , @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size){
-        page.ifPresent(p -> currentPage = p);
-        size.ifPresent(s -> pageSize = s);
-
-        Page<MobileLog> mobileLogPage ;
-        if(hostName.isPresent()){
-            mobileLogPage = mlRepository.findAllByComputerNameOrderByDateAndtimeDesc(hostName.get(), PageRequest.of(currentPage -1, pageSize));
-        } else {
-            mobileLogPage = mlRepository.findAllByComputerNameOrderByDateAndtimeDesc( "", PageRequest.of(currentPage -1, pageSize));
-        }
-
-        model.addAttribute("mobileLogPage", mobileLogPage);
-        int totalPages = mobileLogPage.getTotalPages();
-        if(totalPages > 0){
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
-            model.addAttribute("pageNumbers", pageNumbers);
-
-        }
-
-        return "mobilelog/mobilelogs02";
-    }
-
-    */
 
     //default index method
     @GetMapping("/mobilelog")
@@ -115,80 +88,18 @@ public class MobileLogController {
         return modelAndView;
     }
 
-/*
-    @GetMapping({"/mobilelog/mobilelogs/{hostName}", "/mobilelog/mobilelogs"})
-    public String mobileLogs(@PathVariable Optional<String> hostName, Model model)
-
-    {
-        List<MobileLog> mls ;
-        if(hostName.isPresent()){
-//            findAllByComputerNameOrderByDateAndtimeDesc
-            mls = mlRepository.findAllByComputerNameOrderByDateAndtimeDesc(hostName.get());
-            mls = mlRepository.findAllByComputerNameOrderByDateAndtimeDesc(hostName.get());
-//            mls = mlRepository.findAllByComputerNameOrderByIdDateAndtimeDesc(hostName.get());
-            //findAllByComputerNameContainsOrderByIdIdDesc
-        } else {
-            mls = mlRepository.findAll();
-        }
-
-        model.addAttribute("mobilelogs", mls);
-        return "mobilelog/mobilelogs";
-    }
-
-*/
+    //needs  to fix
     @GetMapping("/mobilelog/search")
     public String searchMobileLogs(@RequestParam Optional<String> aname, Model model){
         if(!aname.isPresent()){
-            return "redirect:/mobilelog/mobilelogs";
+            return "redirect:/mobilelog";
         } else {
             List<MobileLog> mls = mlRepository.findAllByComputerNameOrderByDateAndtimeDesc(aname.get().toUpperCase());
-//            List<MobileLog> mls = mlRepository.findAllByComputerNameContains(aname.get().toUpperCase());
             model.addAttribute("mobilelogs", mls);
-            return "mobilelog/mobilelogs";
+            return "mobilelog";
         }
     }
 
 
-/*
-    @GetMapping({"/mobilelog/mobilestatus/{days}", "/mobilelog/mobilestatus"})
-    public String mobileLogs4(@PathVariable Optional<Integer> days, Model model)
-    {
-        Integer newDays = 7;
-        if(days.isPresent()){
-            newDays = days.get();
-        }
-
-        LocalDate today = LocalDate.now();
-        LocalDate fromDate = today.minusDays(newDays);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String start = fromDate.format(formatter);
-
-        Sort sort = new Sort(Sort.Direction.ASC, "hostName");
-
-        List<MobileComputer> mcs = mcRepository.findAll(sort);
-//        List<MobileComputer> mcs = mcRepository.findAllOrderByHostName();
-        List<MobileStatusView> msvs = new ArrayList<>();
-
-        for(MobileComputer mc : mcs){
-            List<MobileLog>  mls = mlRepository.findAllByComputerNameAndLogDateGreaterThan(mc.getHostName(),start);
-            MobileStatusView msv = new MobileStatusView(mc.getHostName(),mc.getAssetNo(), mc.getModelName(), getProgressBarPercentByUsage(mls.size(),newDays));
-            msvs.add(msv);
-
-        }
-
-        model.addAttribute("mobilestatus", msvs);
-        return "mobilelog/mobilestatus";
-    }
-
-    // small utilities
-    public Integer getProgressBarPercentByUsage(Integer usage, Integer days){
-        int percent = (usage * 100) / days;
-        if(percent > 100 ){
-            return 100;
-        } else {
-            return percent;
-        }
-    }
-    */
 
 }

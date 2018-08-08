@@ -22,6 +22,7 @@ public interface MobileComputerRepository  extends MongoRepository<MobileCompute
     public Optional<MobileComputer> findById(String id);
 
     Page<MobileComputer> findAllByOrderByHostNameAsc(Pageable pageable);
+    Page<MobileComputer> findAllByHostNameLikeOrderByHostNameAsc(String name, Pageable pageable);
     Iterable<MobileComputer> findAllByOrderByHostNameAsc();
 }
 

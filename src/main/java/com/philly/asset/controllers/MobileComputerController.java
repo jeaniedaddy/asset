@@ -27,7 +27,7 @@ public class MobileComputerController {
     private static final int[] PAGE_SIZES = { 5, 10, 20};
 
     @RequestMapping("/mc")
-    public ModelAndView product(@RequestParam("page") Optional<Integer> page, @RequestParam("pageSize") Optional<Integer> pageSize) {
+    public ModelAndView product(@RequestParam("aname") Optional<String> aname, @RequestParam("page") Optional<Integer> page, @RequestParam("pageSize") Optional<Integer> pageSize) {
         ModelAndView modelAndView = new ModelAndView("mc/index");
 
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
@@ -35,8 +35,15 @@ public class MobileComputerController {
         String url = "/mc";
 
         Page<MobileComputer> mobileComputerList;
-        mobileComputerList = mcRepository.findAllByOrderByHostNameAsc(new PageRequest(evalPage, evalPageSize));
-        PagerModel pager = new PagerModel(mobileComputerList.getTotalPages(),mobileComputerList.getNumber(),BUTTONS_TO_SHOW);
+        PagerModel pager;
+
+        if(aname.isPresent()){
+            mobileComputerList = mcRepository.findAllByHostNameLikeOrderByHostNameAsc(aname.get(), new PageRequest(evalPage, evalPageSize));
+        }else {
+
+            mobileComputerList = mcRepository.findAllByOrderByHostNameAsc(new PageRequest(evalPage, evalPageSize));
+        }
+        pager = new PagerModel(mobileComputerList.getTotalPages(),mobileComputerList.getNumber(),BUTTONS_TO_SHOW);
 
         modelAndView.addObject("list",mobileComputerList);
         modelAndView.addObject("selectedPageSize", evalPageSize);
@@ -56,7 +63,7 @@ public class MobileComputerController {
         MobileComputer mc = new MobileComputer(hostName,assetNo,modelName);
         mcRepository.save(mc);
 
-        return "redirect:/mc/show/" + mc.getId();
+        return "redirect:/mc/" + mc.getId();
     }
 
     @RequestMapping("/mc/{id}")
@@ -88,6 +95,6 @@ public class MobileComputerController {
         mc.setModelName(modelName);
         mcRepository.save(mc);
 
-        return "redirect:/mc/show/" + mc.getId();
+        return "redirect:/mc/" + mc.getId();
     }
 }

@@ -25,8 +25,10 @@ public interface MobileLogRepository extends MongoRepository<MobileLog, String> 
     List<MobileLog> findAllByComputerNameAndLogDateBetween(String computerName, String start, String end);
     List<MobileLog> findAllByLogDateGreaterThan(String start);
 
-    @Query("{'hostName':?0}")
-    List<MobileLog> findAllByComputerNameAndLogDateGreaterThan(String computerName, String start);
+//    @Query("{'hostName':?0}")
+    List<MobileLog> findAllByComputerNameAndLogDateGreaterThan(String hostName, String start);
+    //List<MobileLog> findAllByComputerNameAndLogDateGreaterThanDistinctByLogDate(String hostName, String start);
+
 
     List<MobileLog> findAllByComputerNameContains(String name);
     List<MobileLog> findAllByComputerNameLikeOrderByDateAndtimeDesc(String name);
