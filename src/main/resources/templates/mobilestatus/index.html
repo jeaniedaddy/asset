@@ -79,7 +79,6 @@
             </table>
             <div class="row">
                 <div class="form-group col-md-1">
-                    <div>Rows/Page</div>
                     <select class="form-control pagination" id="pageSizeSelect">
                         <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
                                 th:value="${pageSize}"

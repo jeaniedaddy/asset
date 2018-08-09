@@ -11,16 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MobileComputerRepository  extends MongoRepository<MobileComputer,String> {
-    public MobileComputer findFirstByHostName(String hostName);
-
     @Query("{'hostName':?0}")
-    public List<MobileComputer>  findAll();
-
-    public List<MobileComputer> findAllOrderByHostName(Sort sort);
-
-    //public List<MobileComputer>  findAllOrderByHostName();
-    public Optional<MobileComputer> findById(String id);
-
+    List<MobileComputer>  findAll();
+    Optional<MobileComputer> findById(String id);
     Page<MobileComputer> findAllByOrderByHostNameAsc(Pageable pageable);
     Page<MobileComputer> findAllByHostNameLikeOrderByHostNameAsc(String name, Pageable pageable);
     Iterable<MobileComputer> findAllByOrderByHostNameAsc();
