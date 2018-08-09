@@ -25,8 +25,9 @@
         });
         function changePageAndSize() {
             $('#pageSizeSelect').change(function(evt) {
-                var url =  /*[[${url}]]*/ 'default'
-                window.location.replace(url  +"?pageSize=" + this.value + "&page=1");
+                var url =  /*[[${url}]]*/ 'default';
+                var days =  /*[[${days}]]*/ 'default'
+                window.location.replace(url  +"?days=" + days + "&pageSize=" + this.value + "&page=1");
             });
         }
         /*]]>*/
@@ -78,6 +79,7 @@
             </table>
             <div class="row">
                 <div class="form-group col-md-1">
+                    <div>Rows/Page</div>
                     <select class="form-control pagination" id="pageSizeSelect">
                         <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}"
                                 th:value="${pageSize}"
@@ -115,11 +117,6 @@
                     </ul>
                 </div>
             </div>
-            <!--div th:if="${mobileLogPage.totalPages > 0}" class="pagination" th:each="pageNumber : ${pageNumbers}">
-                <a th:href="@{/mobilelog(size=${mobileLogPage.size}, page=${pageNumber})}"
-                   th:text=${pageNumber}
-                   th:class="${pageNumber==mobileLogPage.number + 1} ? active"></a>
-            </div-->
 
         </div>
     </div>

@@ -27,7 +27,7 @@ import java.util.Optional;
 public class MobileStatusController {
     private static final int BUTTONS_TO_SHOW = 3;
     private static final int INITIAL_PAGE = 0;
-    private static final int INITIAL_PAGE_SIZE = 2;
+    private static final int INITIAL_PAGE_SIZE = 10;
     private static final int[] PAGE_SIZES = { 10, 20, 50};
 
     private static final int INITIAL_DAY = 7;
@@ -43,8 +43,6 @@ public class MobileStatusController {
     @GetMapping("/mobilestatus")
     public ModelAndView index(@RequestParam Optional<Integer> days, @RequestParam("page") Optional<Integer> page, @RequestParam("pageSize") Optional<Integer> pageSize){
         ModelAndView modelAndView = new ModelAndView("mobilestatus/index");
-//        ModelAndView m
-// odelAndView = new ModelAndView("mobilelog/mobilestatus");
 
         int evalDays = days.orElse(INITIAL_DAY);
         int evalPageSize = pageSize.orElse(INITIAL_PAGE_SIZE);
@@ -64,22 +62,27 @@ public class MobileStatusController {
         for(MobileComputer mc : mobileComputerList){
             List<MobileLog>  mls = mlRepository.findAllByComputerNameAndLogDateGreaterThan(mc.getHostName(),start);
             int distinctDateCount = getDistinctDateCount(mls);
+
+            // ToDo: need to calculate only count of relevant mobile.
             MobileStatusView msv = new MobileStatusView(mc.getHostName(),mc.getAssetNo(), mc.getModelName(), getProgressBarPercentByUsage(distinctDateCount,evalDays));
             mobileStatusViewList.add(msv);
         }
 
-        Pageable pageable = PageRequest.of(evalPage, evalPageSize);
-        Page<MobileStatusView> aa = new PageImpl<>(mobileStatusViewList,pageable, mobileStatusViewList.size());
+        Integer  fromIndex = (evalPage) *(evalPageSize);
+        Integer toIndex = (evalPage + 1) *(evalPageSize);
+        if(toIndex > mobileStatusViewList.size()){ toIndex = mobileStatusViewList.size(); }
 
-        PagerModel pager = new PagerModel(aa.getTotalPages(),aa.getNumber(),BUTTONS_TO_SHOW);
+        List<MobileStatusView> list = mobileStatusViewList.subList(fromIndex, toIndex);
+        Page<MobileStatusView> pageList = new PageImpl<>(list, new PageRequest(evalPage,evalPageSize,Sort.unsorted()), mobileStatusViewList.size());
 
-        modelAndView.addObject("list",aa);
+        PagerModel pager = new PagerModel(pageList.getTotalPages(),pageList.getNumber(),BUTTONS_TO_SHOW);
+
+        modelAndView.addObject("list",pageList);
         modelAndView.addObject("selectedPageSize", evalPageSize);
         modelAndView.addObject("pageSizes", PAGE_SIZES);
         modelAndView.addObject("pager", pager);
         modelAndView.addObject("days", evalDays);
         modelAndView.addObject("url", url);
-
 
         return modelAndView;
     }
