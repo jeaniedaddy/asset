@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="default">
+<head>
+    <title>Login Information-Test</title>
+</head>
+<body>
+    <div layout:fragment="content" class="row">
+            <h2>Login Information-Test</h2>
+            <div sec:authorize="hasRole('USER')">Text visible to user.</div>
+            <div sec:authorize="hasRole('ADMIN')">Text visible to admin.</div>
+            <div sec:authorize="isAuthenticated()">Text visible only to authenticated users.</div>
+            Authenticated username:
+            <div sec:authentication="name"></div>
+            Authenticated user roles:
+            <div sec:authentication="principal.authorities"></div>
+    </div>
+</body>
+</html>

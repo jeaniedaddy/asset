@@ -17,13 +17,17 @@ public class HomeController {
         return "home/about";
     }
 
-    @GetMapping("/login")
+    @RequestMapping("/login")
     public String login(){
         return "home/login";
     }
 
-    @PostMapping("/login")
-    public String loggnedIn(){
-        return "redirect:/mobilestatus";
+    // for spring security login test
+    @GetMapping("/logininfo")
+    public String loginInfo(){
+        return "home/loginInfo";
     }
+
+
+
 }
